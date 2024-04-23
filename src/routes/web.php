@@ -27,4 +27,6 @@ Route::post('/end_time', [AttendanceController::class, 'end_time']);
 Route::post('/start_time', [RestController::class, 'start_time']);
 Route::post('/end_time', [RestController::class, 'end_time']);
 
-Route::get('/login', [AuthController::class, 'login']);
+Route::middleware('auth')->group(function () {
+    Route::get('/login', [AuthController::class, 'login']);
+});

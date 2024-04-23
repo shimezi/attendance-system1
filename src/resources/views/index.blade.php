@@ -5,37 +5,18 @@
 @endsection
 
 @section('content')
-    <div class="button-form">
-        <ul>
-            <li>
-                <form action="{{ route('attendance/start_time') }}" method="POST">
-                    @csrf
-                    @method('POST')
-                    <button type="submit" class="btn btn-primary">勤務開始</button>
-                </form>
-            </li>
-            <li>
-                <form action="{{ route('attendance/end_time') }}" method="POST">
-                    @csrf
-                    @method('POST')
-                    <button type="submit" class="btn btn-success">勤務終了</button>
-                </form>
-            </li>
-            <li>
-                <form action="{{ route('rest/stard_time') }}" method="POST">
-                    @csrf
-                    @method('POST')
-                    <button type="submit" class="btn btn-primary">休憩開始</button>
-                </form>
-            </li>
-            <li>
-                <form action="{{ route('rest/end_time') }}" method="POST">
-                    @csrf
-                    @method('POST')
+    <div class="attendance__alert">
+        //メッセージ機能
+    </div>
 
-                    <button type="submit" class="btn btn-success">休憩終了</button>
-                </form>
-            </li>
-        </ul>
+    <div class="attendance__content">
+        <div class="attendance__panel">
+            <form class="attendance__button">
+                <button class="attendance__button-submit" type="submit">勤務開始</button>
+            </form>
+            <form class="attendance__button">
+                <button class="attendance__button-submit" type="submit">勤務終了</button>
+            </form>
+        </div>
     </div>
 @endsection
