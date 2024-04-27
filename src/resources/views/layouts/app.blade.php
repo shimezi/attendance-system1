@@ -17,6 +17,13 @@
             <a class="header__logo" href="/">
                 Atte
             </a>
+            <nav>
+                <ul>
+                    <li><a href="/">ホーム</a></li>
+                    <li><a href="/attendance">日付一覧</a></li>
+                    <li><a href="/auth/login">ログアウト</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 

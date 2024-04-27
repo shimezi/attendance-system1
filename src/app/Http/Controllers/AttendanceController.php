@@ -9,8 +9,11 @@ class AttendanceController extends Controller
 {
     public function index()
     {
-        $attendances = Attendance::all();
+        return view('index');
+    }
 
-        return view('index', compact('attendances'));
+    public function attendance()
+    {
+        return view('attendance');
     }
 }

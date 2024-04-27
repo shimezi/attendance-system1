@@ -70,7 +70,8 @@
             </div>
         </form>
         <div class="login__link">
-            <a class="login__buton-submit" href="/login">ログインの方はこちら</a>
+            <p>アカウントをお持ちの方はこちらから</p>
+            <a class="login__buton-submit" href="/login">ログイン</a>
         </div>
     </div>
 @endsection

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RestController;
+use Illuminate\Routing\RouteRegistrar;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,10 +24,14 @@ Route::get('/', function () {
 Route::get('/', [AttendanceController::class, 'index']);
 Route::post('/start_time', [AttendanceController::class, 'start_time']);
 Route::post('/end_time', [AttendanceController::class, 'end_time']);
+Route::get('/attendance', [AttendanceController::class, 'attendance']);
 
 Route::post('/start_time', [RestController::class, 'start_time']);
 Route::post('/end_time', [RestController::class, 'end_time']);
 
 Route::middleware('auth')->group(function () {
-    Route::get('/login', [AuthController::class, 'login']);
+    Route::get('/auth/login', [AuthController::class, 'login']);
+    Route::post('/auth/login', [AuthController::class, 'login']);
+
+    Route::get('/auth/register', [AuthController::class, 'register']);
 });
