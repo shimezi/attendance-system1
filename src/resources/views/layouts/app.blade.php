@@ -13,6 +13,7 @@
 
 <body>
     <header class="header">
+        @yield('header')
         <div class="header__inner">
             <a class="header__logo" href="/">
                 Atte
@@ -32,7 +33,10 @@
     </main>
 
     <fotter class="fotter">
-        <small>Atte,inc.</small>
+        @yield('footer')
+        <div class="footer__inner">
+            <p class="footer__text"><small>Atte,inc.</small></p>
+        </div>
     </fotter>
 </body>
 

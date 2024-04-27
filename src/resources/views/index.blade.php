@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="attendance__alert">
-        //メッセージ機能
+        //メッセージ
     </div>
 
     <div class="attendance__content">
@@ -16,6 +16,12 @@
             </form>
             <form class="attendance__button">
                 <button class="attendance__button-submit" type="submit">勤務終了</button>
+            </form>
+            <form class="attendance__button">
+                <button class="attendance__button-submit" type="submit">休憩開始</button>
+            </form>
+            <form class="attendance__button">
+                <button class="attendance__button-submit" type="submit">休憩終了</button>
             </form>
         </div>
     </div>
