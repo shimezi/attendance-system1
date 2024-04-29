@@ -24,9 +24,9 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'email' => 'required',
-            'password' => 'required',
+            'name' => 'required' | 'string' | 'max:191',
+            'email' => 'required' | 'email' | 'unique:email' | 'string', 'max:191',
+            'password' => 'required' | 'min:8' | 'max:191'
         ];
     }
 
@@ -34,8 +34,16 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name.required' => '名前を入力してください',
+            'name.string' => '名前を文字列で入力してください',
+            'name.max' => '名前は191文字以下で入力してください',
             'email.required' => 'メールアドレスを入力してください',
-            'password.required' => 'パスワードを8文字以上で入力してください',
+            'email.email' => 'メールアドレスはメール形式で入力してください',
+            'email.unique' => 'メールアドレスは既に使用されています',
+            'email.string' => 'メールアドレスは文字列で入力してください',
+            'email.max' => 'メールアドレスは191文字以下で入力してください',
+            'password.required' => 'パスワードを入力してください',
+            'password.max' => 'パスワードは8文字以上で入力してください',
+            'password.min' => 'パスワードは191文字以下で入力してください'
         ];
     }
 }
