@@ -19,11 +19,15 @@
                 Atte
             </a>
             <nav>
-                <ul>
-                    <li><a href="/">ホーム</a></li>
-                    <li><a href="/attendance">日付一覧</a></li>
-                    <li><a href="/auth/login">ログアウト</a></li>
-                </ul>
+                @if (Auth::check())
+                    <ul>
+                        <li><a href="/">ホーム</a></li>
+                        <li><a href="/attendance">日付一覧</a></li>
+                        <form class="form" action="/logout" method="post">
+                            <li><a href="/auth/login">ログアウト</a></li>
+                        </form>
+                    </ul>
+                @endif
             </nav>
         </div>
     </header>

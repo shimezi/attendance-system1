@@ -16,6 +16,10 @@ class Attendance extends Model
         'end_time'
     ];
 
+    /**
+     * ユーザー関連付け
+     * 1対多
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
