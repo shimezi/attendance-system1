@@ -21,17 +21,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/', [AttendanceController::class, 'index']);
-Route::post('/start_time', [AttendanceController::class, 'start_time']);
-Route::post('/end_time', [AttendanceController::class, 'end_time']);
-Route::get('/attendance', [AttendanceController::class, 'attendance']);
-
-Route::post('/start_time', [RestController::class, 'start_time']);
-Route::post('/end_time', [RestController::class, 'end_time']);
-
-Route::middleware('auth')->group(function () {
-    Route::get('/auth/login', [AuthController::class, 'login']);
-    Route::post('/auth/login', [AuthController::class, 'login']);
-
-    Route::get('/auth/register', [AuthController::class, 'register']);
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/', [AttendanceController::class, 'index'])->name('dashboard');
+    Route::post('/attendance/start_time', [AttendanceController::class, 'start']);
+    Route::post('/attendance/end_time', [AttendanceController::class, 'end']);
+    Route::post('/rest/start_time', [RestController::class, 'start']);
+    Route::post('/rest/end_time', [RestController::class, 'end']);
+    Route::get('/attendance', [AttendanceController::class, 'show']);
 });

@@ -12,6 +12,11 @@ use function PHPUnit\Framework\returnSelf;
 
 class AuthController extends Controller
 {
+    public function index()
+    {
+        return view('index');
+    }
+
     public function login()
     {
         return view('auth/login');

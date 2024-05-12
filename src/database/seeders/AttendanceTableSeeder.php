@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AttendanceTableSeeder extends Seeder
 {
@@ -13,26 +15,19 @@ class AttendanceTableSeeder extends Seeder
      */
     public function run()
     {
-        $users = User::all();
+        for ($i=0; $i < ; $i++) { 
+            $date = Carbon::now()->subDays(rand(1,30));
+            $startTime = $date->copy()->setHour(rand(8,10))->setMinute(rand0,59);
+            $endTime = $date->copy()->setHour(rand(17,19))->setMinute(rand(0,59));
 
-        foreach ($users as $user) {
-            $this->createAttendance($user, '勤務開始', now()->subDays(2)->setTime(9, 0));
-            $this->createAttendance($user, '勤務終了', now()->subDays(2)->setTime(18, 0));
-
-            $this->createAttendance($user, '勤務開始', now()->subDays(1)->setTime(9, 30));
-            $this->createAttendance($user, '勤務終了', now()->subDays(1)->setTime(18, 30));
-
-            $this->createAttendance($user, '勤務開始', now()->setTime(9, 15));
-            $this->createAttendance($user, '勤務終了', now()->setTime(18, 15));
+            DB::table('attendance')->insert([
+                'user_id'=> $i,
+                'start_time' => $startTime,
+                'end_time' => $endTime,
+                'create_at' => Carbon::now(),
+                'update_at' => Carbon::now(),
+            ]);
         }
     }
 
-    private function createAttendance($user, $status, $time)
-    {
-        Attendance::create([
-            'user_id' => $user->id,
-            'status' => $status,
-            'time' => $time,
-        ]);
-    }
 }
