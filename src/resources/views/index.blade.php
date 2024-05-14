@@ -5,20 +5,24 @@
 @endsection
 
 @section('content')
-    <form action="/attendance/start_time" method="POST">
+    <h1>Welcome, {{ Auth::user()->name }}!</h1>
+    @if (session('status'))
+        <div>{{ session('status') }}</div>
+    @endif
+    <form action="{{ route('attendance.start') }}" method="POST">
         @csrf
-        <button type="submit">勤務開始</button>
+        <button type="submit">Start Work</button>
     </form>
-    <form action="/attendance/end_time" method="POST">
+    <form action="{{ route('attendance.end') }}" method="POST">
         @csrf
-        <button type="submit">勤務終了</button>
+        <button type="submit">End Work</button>
     </form>
-    <form action="/rest/start_time" method="POST">
+    <form action="{{ route('rest.start') }}" method="POST">
         @csrf
-        <button type="submit">休憩開始</button>
+        <button type="submit">Start Rest</button>
     </form>
-    <form action="/rest/end_time" method="POST">
+    <form action="{{ route('rest.end') }}" method="POST">
         @csrf
-        <button type="submit">休憩終了</button>
+        <button type="submit">End Rest</button>
     </form>
 @endsection

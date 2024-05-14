@@ -5,6 +5,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RestController;
 use Illuminate\Routing\RouteRegistrar;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,11 +22,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/', [AttendanceController::class, 'index'])->name('dashboard');
-    Route::post('/attendance/start_time', [AttendanceController::class, 'start']);
-    Route::post('/attendance/end_time', [AttendanceController::class, 'end']);
-    Route::post('/rest/start_time', [RestController::class, 'start']);
-    Route::post('/rest/end_time', [RestController::class, 'end']);
-    Route::get('/attendance', [AttendanceController::class, 'show']);
+Route::middleware('auth')->group(function () {
+    Route::get('/', [AuthController::class, 'index'])->name('home');
+    Route::get('/attendance', [AttendanceController::class, 'showAttendance'])->name('attendance.show');
+    Route::post('/attendance/start', [AttendanceController::class, 'startAttendance'])->name('attendance.start');
+    Route::post('/attendance/end', [AttendanceController::class, 'endAttendance'])->name('attendance.end');
+    Route::post('/rest/start', [RestController::class, 'startRest'])->name('rest.start');
+    Route::post('/rest/end', [RestController::class, 'endRest'])->name('rest.end');
 });

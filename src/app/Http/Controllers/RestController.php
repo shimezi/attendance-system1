@@ -5,44 +5,33 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Rest;
 use App\Models\Attendance;
-use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Auth;
 
 class RestController extends Controller
 {
-    public function start(Request $request)
+    public function startRest()
     {
-        $attendance = Attendance::where('user_id', Auth::id())
-            ->where('date', CarbonImmutable::today())
-            ->first();
+        $attendance = Attendance::where('user_id', Auth::id())->latest('date')->first();
 
-        if ($attendance) {
-            $rest = new Rest();
-            $rest->attendance_id = $attendance->id;
-            $rest->start_time = CarbonImmutable::now();
-            $rest->save();
+        if ($attendance && !$attendance->rests()->whereNull('end_time')->exists()) {
+            Rest::create([
+                'attendance_id' => $attendance->id,
+                'start_time' => now(),
+            ]);
+            return redirect('/')->with('status', 'Rest started successfully!');
         }
-
-        return redirect('/');
+        return redirect('/')->with('status', 'You must finish the current rest to start a new one.');
     }
 
-    public function end(Request $request)
+    public function endRest()
     {
-        $attendance = Attendance::where('user_id', Auth::id())
-            ->where('date', CarbonImmutable::today())
-            ->first();
+        $attendance = Attendance::where('user_id', Auth::id())->latest()->first();
+        $rest = $attendance ? $attendance->rests()->whereNull('end_time')->first() : null;
 
-        if ($attendance) {
-            $rest = Rest::where('attendance_id', $attendance->id)
-                ->whereNull('end_time')
-                ->first();
-
-            if ($rest) {
-                $rest->end_time = CarbonImmutable::now();
-                $rest->save();
-            }
+        if ($rest) {
+            $rest->update(['end_time' => now()]);
+            return redirect('/')->with('status', 'Rest ended successfully!');
         }
-
-        return redirect('/');
+        return redirect('/')->with('status', 'No ongoing rest to end.');
     }
 }

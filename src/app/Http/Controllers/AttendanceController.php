@@ -16,39 +16,37 @@ class AttendanceController extends Controller
         return view('index');
     }
 
-    public function start(Request $request)
+    public function startAttendance()
     {
-        $attendance = new Attendance();
-        $attendance->user_id = Auth::id();
-        $attendance->date = CarbonImmutable::today();
-        $attendance->start_time = CarbonImmutable::now();
-        $attendance->save();
+        $today = CarbonImmutable::today();
+        $attendance = Attendance::where('user_id', Auth::id())->where('date', $today)->first();
 
-        return redirect('/');
-    }
-
-    public function end(Request $request)
-    {
-        $attendance = Attendance::where('user_id', Auth::id())
-            ->where('date', CarbonImmutable::today())
-            ->first();
-
-        if ($attendance) {
-            $attendance->end_time = CarbonImmutable::now();
+        if (!$attendance) {
+            $attendance = new Attendance([
+                'user_id' => Auth::id(),
+                'date' => $today,
+                'start_time' => now(),
+            ]);
             $attendance->save();
         }
-
-        return redirect('/');
+        return redirect('/')->with('status', 'Attendance started successfully!');
     }
 
-    public function show()
+    public function endAttendance()
     {
-        // ログインユーザーの出勤データを取得
-        $attendances = Attendance::with(['user', 'rests'])
-            ->where('user_id', Auth::id())
-            ->get();
+        $today = CarbonImmutable::today();
+        $attendance = Attendance::where('user_id', Auth::id())->where('date', $today)->first();
 
-        // データをビューに渡す
+        if ($attendance && !$attendance->end_time) {
+            $attendance->update(['end_time' => CarbonImmutable::now()]);
+            return redirect('/')->with('status', 'Attendance ended successfully!');
+        }
+        return redirect('/')->with('status', 'You cannot end work before starting it');
+    }
+
+    public function showAttendance()
+    {
+        $attendances = Attendance::where('user_id', Auth::id())->get();
         return view('attendance', compact('attendances'));
     }
 }
