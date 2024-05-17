@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RestController;
+use Illuminate\Auth\Events\Attempting;
 use Illuminate\Routing\RouteRegistrar;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -18,15 +19,19 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 |
 */
 
+/*
 Route::get('/', function () {
     return view('welcome');
 });
+*/
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', [AuthController::class, 'index'])->name('home');
-    Route::get('/attendance', [AttendanceController::class, 'showAttendance'])->name('attendance.show');
-    Route::post('/attendance/start', [AttendanceController::class, 'startAttendance'])->name('attendance.start');
-    Route::post('/attendance/end', [AttendanceController::class, 'endAttendance'])->name('attendance.end');
+    Route::get('/', [AttendanceController::class, 'index'])->name('index');
+    route::post('/attendance/start_work', [AttendanceController::class, 'startAttendance'])->name('attendance.start');
+    //勤務終了の打刻を行うルート
+    Route::post('attendance/end', [AttendanceController::class, 'endAttendance'])->name('attendance.end');
+    //休憩開始の打刻を行うルート
     Route::post('/rest/start', [RestController::class, 'startRest'])->name('rest.start');
-    Route::post('/rest/end', [RestController::class, 'endRest'])->name('rest.end');
+    //休憩終了の打刻を行うルート
+    Route::post('rest/end', [RestController::class, 'endRest'])->name('rest.end');
 });

@@ -13,40 +13,42 @@ class AttendanceController extends Controller
 {
     public function index()
     {
+        //indexビューを呼び出す際に特定のデータは不要な場合、単にビューを渡す
         return view('index');
-    }
-
-    public function startAttendance()
-    {
-        $today = CarbonImmutable::today();
-        $attendance = Attendance::where('user_id', Auth::id())->where('date', $today)->first();
-
-        if (!$attendance) {
-            $attendance = new Attendance([
-                'user_id' => Auth::id(),
-                'date' => $today,
-                'start_time' => now(),
-            ]);
-            $attendance->save();
-        }
-        return redirect('/')->with('status', 'Attendance started successfully!');
-    }
-
-    public function endAttendance()
-    {
-        $today = CarbonImmutable::today();
-        $attendance = Attendance::where('user_id', Auth::id())->where('date', $today)->first();
-
-        if ($attendance && !$attendance->end_time) {
-            $attendance->update(['end_time' => CarbonImmutable::now()]);
-            return redirect('/')->with('status', 'Attendance ended successfully!');
-        }
-        return redirect('/')->with('status', 'You cannot end work before starting it');
     }
 
     public function showAttendance()
     {
-        $attendances = Attendance::where('user_id', Auth::id())->get();
-        return view('attendance', compact('attendances'));
+        //日付指定がある場合はその日付で、なければ今日の日付でデータを取得
+        $date = request('date') ? CarbonImmutable::createFromFormat('Y-m-d', request('date')) : CarbonImmutable::today();
+        $attendances = Attendance::with(['user', 'rests'])->whereDate('date', $date->format('Y-m-d'))->paginate(5);
+        return view('attendance', compact('attendances', 'date'));
+    }
+
+    //勤務開始の打刻
+    public function startAttendance()
+    {
+        $attendance = new Attendance([
+            'user_id' => Auth::id(),
+            'date' => CarbonImmutable::today()->format('Y-m-d'),
+            'start_time' => CarbonImmutable::now(),
+        ]);
+        $attendance->save();
+
+        return redirect()->route('index')->with('status', '勤務開始の打刻が完了しました');
+    }
+
+    //勤務終了の打刻
+    public function endAttendance(Request $request)
+    {
+        //勤務終了のロジックを実装
+        //例：最後の勤務開始記録を検索し終了時間を設定
+        $attendance = Attendance::where('user_id', Auth::id())->latest('start_time')->first();
+        if ($attendance) {
+            $attendance->end_time = CarbonImmutable::now();
+            $attendance->save();
+        }
+
+        return redirect()->route('index')->with('status', '勤務終了の打刻が完了しました');
     }
 }
