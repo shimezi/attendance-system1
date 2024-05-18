@@ -23,9 +23,9 @@
                     <ul>
                         <li><a href="/">ホーム</a></li>
                         <li><a href="/attendance">日付一覧</a></li>
-                        <form class="form" action="/logout" method="post">
+                        <form action="{{ route('logout') }}" method="POST">
                             @csrf
-                            <li><a href="/auth/login">ログアウト</a></li>
+                            <li><a href="/logout">ログアウト</a></li>
                         </form>
                     </ul>
                 @endif

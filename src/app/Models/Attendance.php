@@ -23,4 +23,15 @@ class Attendance extends Model
     {
         return $this->hasMany(Rest::class);
     }
+
+    //勤務時間を計算します
+    public function totalWorkTime()
+    {
+        if ($this->start_time && $this->end_time) {
+            $start = CarbonImmutable::createFromFormat('Y-m-d H;i;s', $this->start_time);
+            $end = CarbonImmutable::createFromFormat('Y-m-d H:i:s', $this->end_time);
+            return $end->diffInHours($start, false) . 'hours'; // 勤務時間を時間で返します
+        }
+        return 'Not available'; // 勤務時間が計算できない場合
+    }
 }

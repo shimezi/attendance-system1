@@ -22,3 +22,9 @@
   padding: 12px;
   width: 20%;
 }
+
+/* 矢印がimgタグやSVGタグで実装されている場合 */
+.pagination {
+    width: 20px; /* サイズを20pxに設定 */
+    height: 20px; /* サイズを20pxに設定 */
+}

@@ -12,8 +12,8 @@
             <input type="text" name="name" placeholder="名前" required>
             <input type="email" name="email" placeholder="メールアドレス" required>
             <input type="password" name="password" placeholder="パスワード" required>
-            <input type="password" name="password_confirmation" placeholder="パスワード確認" required>
-            <button type="submit">登録</button>
+            <input type="password" name="password_confirmation" placeholder="確認用パスワード" required>
+            <button type="submit">会員登録</button>
         </form>
     </div>
 @endsection

@@ -6,9 +6,10 @@
 
 @section('content')
     <div class="container">
-        <h1>勤務記録 {{ $date->format('Y-m-d') }}</h1>
-        <a href="{{ route('attendance.index', ['date' => $date->subDay()->format('Y-m-d')]) }}">前日</a>
-        <a href="{{ route('attendance.index', ['date' => $date->addDay()->format('Y-m-d')]) }}">次日</a>
+        {{-- <h1>{{ $date->format('Y-m-d') }}</h1> --}}
+        <a href="{{ route('attendance.show', ['date' => $date->subDay()->format('Y-m-d')]) }}">前</a>
+        {{ $date->format('Y-m-d') }}
+        <a href="{{ route('attendance.show', ['date' => $date->addDay()->format('Y-m-d')]) }}">次</a>
         <table>
             <thead>
                 <tr>
@@ -31,6 +32,11 @@
                 @endforeach
             </tbody>
         </table>
-        {{ $attendances->links() }}
-    </div>
-@endsection
+        @if ($attendances->count() > 0)
+            <div class="pagination">
+                {{ $attendances->links() }}
+            </div>
+        @else
+            <p>No attendance records found.</p>
+        @endif
+    @endsection

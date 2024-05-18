@@ -26,12 +26,23 @@ Route::get('/', function () {
 */
 
 Route::middleware('auth')->group(function () {
+    // トップページのルート
     Route::get('/', [AttendanceController::class, 'index'])->name('index');
-    route::post('/attendance/start_work', [AttendanceController::class, 'startAttendance'])->name('attendance.start');
-    //勤務終了の打刻を行うルート
-    Route::post('attendance/end', [AttendanceController::class, 'endAttendance'])->name('attendance.end');
-    //休憩開始の打刻を行うルート
+
+    // 勤務開始の打刻を行うルート
+    Route::post('/attendance/start_work', [AttendanceController::class, 'startAttendance'])->name('attendance.start');
+
+    // 勤務終了の打刻を行うルート
+    Route::post('/attendance/end', [AttendanceController::class, 'endAttendance'])->name('attendance.end');
+
+    // 休憩開始の打刻を行うルート
     Route::post('/rest/start', [RestController::class, 'startRest'])->name('rest.start');
-    //休憩終了の打刻を行うルート
-    Route::post('rest/end', [RestController::class, 'endRest'])->name('rest.end');
+
+    // 休憩終了の打刻を行うルート
+    Route::post('/rest/end', [RestController::class, 'endRest'])->name('rest.end');
+
+    // 勤怠ページのルート
+    Route::get('attendance', [AttendanceController::class, 'showAttendances'])->name('attendance.show');
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 });

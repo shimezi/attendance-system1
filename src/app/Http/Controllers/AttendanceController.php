@@ -51,4 +51,15 @@ class AttendanceController extends Controller
 
         return redirect()->route('index')->with('status', '勤務終了の打刻が完了しました');
     }
+
+    public function showAttendances()
+    {
+        $date = request('date') ? CarbonImmutable::createFromFormat('Y-m-d', request('date')) : CarbonImmutable::today();
+        // ページネーションの適用
+        $attendances = Attendance::where('user_id', Auth::id())
+            ->whereDate('date', $date->format('Y-m-d'))
+            ->paginate(5); // 1ページあたりのアイテム数を指定
+
+        return view('attendance', compact('attendances', 'date'));
+    }
 }
