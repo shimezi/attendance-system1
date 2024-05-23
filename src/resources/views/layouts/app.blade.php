@@ -5,44 +5,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Atte</title>
-    <link rel="stylesheet" href="{{ 'css/sanitize.css' }}">
-    <link rel="stylesheet" href="{{ 'css/common.css' }}">
+    <title>勤怠管理システム</title>
+    <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/common.css') }}">
     @yield('css')
 </head>
 
 <body>
-    <header class="header">
-        @yield('header')
-        <div class="header__inner">
-            <a class="header__logo" href="/">
-                Atte
-            </a>
+    <header>
+        @if (Auth::check())
             <nav>
-                @if (Auth::check())
-                    <ul>
-                        <li><a href="/">ホーム</a></li>
-                        <li><a href="/attendance">日付一覧</a></li>
-                        <form action="{{ route('logout') }}" method="POST">
+                <ul>
+                    <li><a href="{{ route('index') }}">ホーム</a></li>
+                    <li><a href="{{ route('attendance') }}">日付一覧</a></li>
+                    <li>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
                             @csrf
-                            <li><a href="/logout">ログアウト</a></li>
+                            <button type="submit" class="logout-link">ログアウト</button>
                         </form>
-                    </ul>
-                @endif
+                    </li>
             </nav>
-        </div>
+        @endif
     </header>
-
     <main>
         @yield('content')
     </main>
-
-    <fotter class="fotter">
-        @yield('footer')
-        <div class="footer__inner">
-            <p class="footer__text"><small>Atte,inc.</small></p>
-        </div>
-    </fotter>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+    <!-- 他のフッターコンテンツ -->
 </body>
 
 </html>

@@ -32,7 +32,7 @@ class AuthController extends Controller
 
         Auth::login($user); //ユーザーログイン
 
-        return redirect()->route('dashboard'); //ログイン後にリダイレクト
+        return redirect()->route('index'); //ログイン後にリダイレクト
     }
 
     public function login(LoginRequest $request)
@@ -41,7 +41,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             //ログイン成功
-            return redirect()->intended('dashboard');
+            return redirect()->intended('index');
         }
 
         //ログイン失敗
@@ -65,8 +65,9 @@ class AuthController extends Controller
         Auth::logout();
 
         $request->session()->invalidate();
+
         $request->session()->regenerateToken();
 
-        return redirect('/'); // ログアウト後のリダイレクト先
+        return redirect()->route('index');
     }
 }

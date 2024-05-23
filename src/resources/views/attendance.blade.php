@@ -6,37 +6,30 @@
 
 @section('content')
     <div class="container">
-        {{-- <h1>{{ $date->format('Y-m-d') }}</h1> --}}
-        <a href="{{ route('attendance.show', ['date' => $date->subDay()->format('Y-m-d')]) }}">前</a>
-        {{ $date->format('Y-m-d') }}
-        <a href="{{ route('attendance.show', ['date' => $date->addDay()->format('Y-m-d')]) }}">次</a>
+        <h1>日付別勤務一覧</h1>
         <table>
             <thead>
                 <tr>
-                    <th>名前</th>
-                    <th>勤務開始</th>
-                    <th>勤務終了</th>
-                    <th>休憩時間</th>
-                    <th>勤務時間</th>
+                    <th>ユーザー名</th>
+                    <th>日付</th>
+                    <th>勤務開始時間</th>
+                    <th>勤務終了時間</th>
+                    <th>休憩合計時間 (分)</th>
+                    <th>勤務合計時間 (分)</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($attendances as $attendance)
                     <tr>
                         <td>{{ $attendance->user->name }}</td>
-                        <td>{{ optional($attendance->start_time)->format('H:i:s') }}</td>
-                        <td>{{ optional($attendance->end_time)->format('H:i:s') }}</td>
-                        <td>{{ $attendance->rests->sum('duration') }}</td>
-                        <td>{{ $attendance->totalWorkTime() }}</td>
+                        <td>{{ $attendance->date }}</td>
+                        <td>{{ $attendance->start_time }}</td>
+                        <td>{{ $attendance->end_time }}</td>
+                        <td>{{ $attendance->total_rest_time }}</td>
+                        <td>{{ $attendance->total_attendance_time }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-        @if ($attendances->count() > 0)
-            <div class="pagination">
-                {{ $attendances->links() }}
-            </div>
-        @else
-            <p>No attendance records found.</p>
-        @endif
-    @endsection
+    </div>
+@endsection

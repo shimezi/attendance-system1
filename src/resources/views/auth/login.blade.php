@@ -7,10 +7,16 @@
 @section('content')
     <div class="container">
         <h2>ログイン</h2>
-        <form method="POST" action="{{ route('login') }}">
+        <form action="{{ route('login') }}" method="POST">
             @csrf
-            <input type="email" name="email" placeholder="メールアドレス" required>
-            <input type="password" name="password" placeholder="パスワード" required>
+            <div>
+                <label for="email">メールアドレス</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="password">パスワード</label>
+                <input type="password" id="password" name="password" required>
+            </div>
             <button type="submit">ログイン</button>
         </form>
     </div>

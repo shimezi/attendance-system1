@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\CarbonImmutable;
 
 class Attendance extends Model
 {
     use HasFactory;
 
     protected $fillable = ['user_id', 'date', 'start_time', 'end_time'];
-
-    protected $date = ['date', 'start_time', 'end_time'];
 
     public function user()
     {
@@ -24,14 +22,36 @@ class Attendance extends Model
         return $this->hasMany(Rest::class);
     }
 
-    //勤務時間を計算します
-    public function totalWorkTime()
+    public function getTotalRestTimeAttribute()
+
     {
-        if ($this->start_time && $this->end_time) {
-            $start = CarbonImmutable::createFromFormat('Y-m-d H;i;s', $this->start_time);
-            $end = CarbonImmutable::createFromFormat('Y-m-d H:i:s', $this->end_time);
-            return $end->diffInHours($start, false) . 'hours'; // 勤務時間を時間で返します
+        $totalRestTime = $this->rests->reduce(function ($carry, $rest) {
+            if ($rest->end_time) {
+                $start = CarbonImmutable::parse($rest->start_time);
+                $end = CarbonImmutable::parse($rest->end_time);
+                return $carry + $end->diffInSeconds($start);
+            }
+            return $carry;
+        }, 0);
+
+        return gmdate('H:i:s', $totalRestTime);
+    }
+
+    public function getTotalAttendanceTimeAttribute()
+    {
+        if ($this->end_time) {
+            $attendanceTime = CarbonImmutable::parse($this->end_time)->diffInSeconds(CarbonImmutable::parse($this->start_time));
+            $totalRestTime = $this->rests->sum(function ($rest) {
+                if ($rest->end_time) {
+                    $start = CarbonImmutable::parse($rest->start_time);
+                    $end = CarbonImmutable::parse($rest->end_time);
+                    return $end->diffInSeconds($start);
+                }
+                return 0;
+            });
+            $totalAttendanceTime = $attendanceTime - $totalRestTime;
+            return gmdate('H:i:s', $totalAttendanceTime);
         }
-        return 'Not available'; // 勤務時間が計算できない場合
+        return '00:00:00';
     }
 }

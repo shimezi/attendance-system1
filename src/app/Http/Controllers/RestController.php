@@ -11,41 +11,43 @@ use Illuminate\Support\Facades\Auth;
 
 class RestController extends Controller
 {
-    //休憩開始の打刻
+    // 休憩開始
     public function startRest(Request $request)
     {
-        // ユーザーの最新の勤務記録を取得
-        $latestAttendance = Attendance::where('user_id', Auth::id())->latest('start_time')->first();
-        if (!$latestAttendance) {
-            return redirect()->back()->withErrors('勤務開始が記録されていません');
+        // 勤務が開始されているか確認
+        $attendance = Attendance::where('user_id', Auth::id())
+            ->whereDate('date', CarbonImmutable::now()->toDateString())
+            ->latest()
+            ->first();
+
+        if ($attendance) {
+            $rest = new Rest();
+            $rest->attendance_id = $attendance->id;
+            $rest->start_time = CarbonImmutable::now();
+            $rest->save();
+
+            return redirect()->route('index')->with('success', '休憩を開始しました');
+        } else {
+            return redirect()->route('index')->with('error', '勤務が開始されていません');
         }
-
-        //休憩開始のロジック
-        $rest = new Rest([
-            'attendance_id' => $latestAttendance->id,  //適切にattendance_idを取得する必要あり
-            'start_time' => CarbonImmutable::now(),
-        ]);
-
-        $rest->save();
-
-        return redirect()->back()->with('status', '休憩開始の打刻が完了しました');
     }
 
-    //休憩終了の打刻
+    // 休憩終了
     public function endRest(Request $request)
     {
-        // ユーザーの最新の休憩記録を取得して終了時間を設定
-        $latestRest = Rest::whereHas('attendance', function ($query) {
-            $query->where('user_id', Auth::id());
-        })->whereNull('end_time')->latest()->first();
+        // 最新の休憩記録を取得
+        $rest = Rest::whereHas('attendance', function ($query) {
+            $query->where('user_id', Auth::id())
+                ->whereDate('date', CarbonImmutable::now()->toDateString());
+        })->latest()->first();
 
-        // ユーザーの最新の休憩記録を取得して終了時間を設定
-        if ($latestRest) {
-            $latestRest->end_time = CarbonImmutable::now();
-            $latestRest->save();
-            return redirect()->back()->with('status', '休憩終了の打刻が完了しました');
+        if ($rest && $rest->end_time === null) {
+            $rest->end_time = CarbonImmutable::now();
+            $rest->save();
+
+            return redirect()->route('index')->with('success', '休憩を終了しました');
+        } else {
+            return redirect()->route('index')->with('error', '休憩が開始されていません');
         }
-
-        return redirect()->back()->withErrors('休憩開始が記録されていません');
     }
 }
