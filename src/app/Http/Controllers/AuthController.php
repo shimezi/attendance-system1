@@ -27,12 +27,12 @@ class AuthController extends Controller
         $user = new User();
         $user->name = $validateData['name'];
         $user->email = $validateData['email'];
-        $user->password = Hash::make($validateData['password']); //パスワードをハッシュ化
+        $user->password = Hash::make($validateData['password']); // パスワードをハッシュ化
         $user->save();
 
-        Auth::login($user); //ユーザーログイン
+        Auth::login($user); // ユーザーログイン
 
-        return redirect()->route('index'); //ログイン後にリダイレクト
+        return redirect()->route('index'); // ログイン後にリダイレクト
     }
 
     public function login(LoginRequest $request)
@@ -40,24 +40,14 @@ class AuthController extends Controller
         $credentials = $request->validated();
 
         if (Auth::attempt($credentials)) {
-            //ログイン成功
+            // ログイン成功
             return redirect()->intended('index');
         }
 
-        //ログイン失敗
+        // ログイン失敗
         return back()->withErrors([
-            'email' => 'The provided credentials do not our records',
+            'email' => 'The provided credentials do not match our records',
         ]);
-    }
-
-    public function showRegistrationForm()
-    {
-        return view('auth.register');
-    }
-
-    public function showLoginForm()
-    {
-        return view('auth.login');
     }
 
     public function logout(Request $request)

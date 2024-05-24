@@ -7,6 +7,9 @@
 @section('content')
     <div class="container">
         <h2>勤務管理</h2>
+        @if (Auth::check())
+            <p>{{ Auth::user()->name }}さんお疲れ様です！</p>
+        @endif
         <div class="button-group">
             <form action="{{ route('attendance.start') }}" method="POST">
                 @csrf
@@ -17,12 +20,12 @@
                 <button type="submit" {{ $canEndAttendance ? '' : 'disabled' }}>勤務終了</button>
             </form>
             <form action="{{ route('rest.start') }}" method="POST">
-            @csrf
-            <button type="submit" {{ $canStartRest ? '' : 'disabled' }}>休憩開始</button>
+                @csrf
+                <button type="submit" {{ $canStartRest ? '' : 'disabled' }}>休憩開始</button>
             </form>
             <form action="{{ route('rest.end') }}" method="POST">
-            @csrf
-            <button type="submit" {{ $canEndRest ? '' : 'disabled' }}>休憩終了</button>
+                @csrf
+                <button type="submit" {{ $canEndRest ? '' : 'disabled' }}>休憩終了</button>
             </form>
         </div>
     </div>

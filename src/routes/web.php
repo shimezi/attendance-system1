@@ -30,10 +30,8 @@ Route::get('/', [AttendanceController::class, 'index'])->name('index');
 
 // 認証が必要なルート
 Route::middleware('auth')->group(function () {
-    //日付別勤務一覧
+    // 日付別勤務一覧
     Route::get('/attendance', [AttendanceController::class, 'attendance'])->name('attendance');
-    // 勤務開始
-    Route::post('/attendance/start', [AttendanceController::class, 'startAttendance'])->name('attendance.start');
 
     // 勤務終了
     Route::post('/attendance/end', [AttendanceController::class, 'endAttendance'])->name('attendance.end');
@@ -44,3 +42,6 @@ Route::middleware('auth')->group(function () {
     // 休憩終了
     Route::post('/rest/end', [RestController::class, 'endRest'])->name('rest.end');
 });
+
+// 勤務開始（認証不要）
+Route::post('/attendance/start', [AttendanceController::class, 'startAttendance'])->name('attendance.start');

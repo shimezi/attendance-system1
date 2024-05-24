@@ -10,12 +10,12 @@
         <table>
             <thead>
                 <tr>
-                    <th>ユーザー名</th>
+                    <th>名前</th>
                     <th>日付</th>
-                    <th>勤務開始時間</th>
-                    <th>勤務終了時間</th>
-                    <th>休憩合計時間 (分)</th>
-                    <th>勤務合計時間 (分)</th>
+                    <th>勤務開始</th>
+                    <th>勤務終了</th>
+                    <th>休憩時間</th>
+                    <th>勤務時間</th>
                 </tr>
             </thead>
             <tbody>

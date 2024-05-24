@@ -19,5 +19,9 @@
             </div>
             <button type="submit">ログイン</button>
         </form>
+        <p>アカウントをお持ちでない方はこちらから</p>
+        <a href="{{ route('register') }}">
+            <button>会員登録</button>
+        </a>
     </div>
 @endsection
