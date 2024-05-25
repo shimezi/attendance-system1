@@ -73,13 +73,22 @@ class AttendanceController extends Controller
         return view('index', compact('canStartAttendance', 'canEndAttendance', 'canStartRest', 'canEndRest'));
     }
 
-    //日付別勤務一覧のページ
-    public function attendance()
+    public function attendance(Request $request)
     {
-        $attendances = Attendance::with('user')->get();
-        return view('attendance', compact('attendances'));
-    }
+        // リクエストから日付を取得し、存在しない場合は今日の日付を使用
+        $date = $request->input('date', CarbonImmutable::now()->toDateString());
+        $date = CarbonImmutable::parse($date);
 
+        // その日の勤務記録を取得
+        $attendances = Attendance::with('user')->whereDate('date', $date)->get();
+
+        return view('attendance', [
+            'attendances' => $attendances,
+            'date' => $date->toDateString(),
+            'previousDate' => $date->subDay()->toDateString(),
+            'nextDate' => $date->addDay()->toDateString()
+        ]);
+    }
     // 勤務開始
     public function startAttendance(Request $request)
     {
