@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>勤怠管理システム</title>
+    <title>Atte</title>
     <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}">
     <link rel="stylesheet" href="{{ asset('css/common.css') }}">
     @yield('css')
@@ -13,27 +13,33 @@
 
 <body>
     <header>
-        @if (Auth::check())
-            <nav>
-                <ul>
-                    <li><a href="{{ route('index') }}">ホーム</a></li>
-                    <li><a href="{{ route('attendance') }}">日付一覧</a></li>
-                    <li>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
-                            @csrf
-                            <button type="submit" class="logout-link">ログアウト</button>
-                        </form>
-                    </li>
-            </nav>
-        @endif
+        <div class="header-inner">
+            <h1 class="logo">
+                <a href="{{ route('index') }}">Atte</a>
+            </h1>
+            @if (Auth::check())
+                <div class="nav-container">
+                    <ul class="nav-list">
+                        <li><a href="{{ route('index') }}">ホーム</a></li>
+                        <li><a href="{{ route('attendance') }}">日付一覧</a></li>
+                    </ul>
+                    <a href="#" class="logout-link"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        ログアウト
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </div>
+            @endif
+        </div>
     </header>
     <main>
         @yield('content')
     </main>
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-        @csrf
-    </form>
-    <!-- 他のフッターコンテンツ -->
+    <footer>
+        <small>Atte, Inc.</small>
+    </footer>
 </body>
 
 </html>

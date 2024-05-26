@@ -1,44 +1,72 @@
-.attendance__alert--success {
-  padding: 10px 30px;
-  border-color: #badbcc;
-  background-color: #d1e7dd;
-  color: #0f5132;
+.container-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 150px);
+    background-color: #F2F2F2;
 }
 
-.attendance__alert--danger {
-  padding: 10px 0;
-  border-color: #f5c2c7;
-  background-color: #f8d7da;
-  color: #842029;
+.container {
+    background-color: #F2F2F2;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
 }
 
-.attendance__alert--danger ul {
-  margin: 0;
+.user-greeting {
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-top: 30px;
 }
 
-.attendance__panel {
-  margin: 0 auto;
-  width: 70%;
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: auto;
 }
 
-.attendance__button {
-  width: 100%;
-  text-align: center;
+.button-grid > form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.attendance__button-submit {
-  padding: 5px;
-  width: 30%;
-  height: 50px;
-  border: none;
-  border-radius: 3px;
-  background: #000;
-  color: #fff;
-  cursor: pointer;
+.clock-button {
+    width: 500px;
+    height: 200px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #FEFEFE;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-.attendance__content {
-  margin: 0 auto;
-  padding: 30px 15px;
-  max-width: 1230px;
+.clock-button:disabled {
+    background-color: #FEFEFE;
+    color: #F2F2F2;
+    cursor: default;
+}
+
+@media (max-width: 768px) {
+    .button-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, auto);
+        gap: 20px;
+    }
+
+    .clock-button {
+        width: 100%;
+        height: auto;
+    }
 }

@@ -6,12 +6,12 @@
 
 @section('content')
     <div class="container">
-        <div>
+        <div class="date-navigation">
             <form action="{{ route('attendance') }}" method="GET" style="display:inline;">
                 <input type="hidden" name="date" value="{{ $previousDate }}">
                 <button type="submit">&lt;</button>
             </form>
-            <span>日付: {{ $date }}</span>
+            <span>{{ $date }}</span>
             <form action="{{ route('attendance') }}" method="GET" style="display:inline;">
                 <input type="hidden" name="date" value="{{ $nextDate }}">
                 <button type="submit">&gt;</button>
@@ -39,5 +39,7 @@
                 @endforeach
             </tbody>
         </table>
+        <!-- ページネーションリンクを表示 -->
+        {{ $attendances->links() }}
     </div>
 @endsection
